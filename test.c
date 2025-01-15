@@ -15,4 +15,12 @@ int main() {
     printf("hello");
     printf("hello");
     free(b);
+
+    char a[] = "test";
+
+    for (int i = 0; i < 8; i++)
+    {
+        printf("%s", a);
+    }
+    
 }
