@@ -1,0 +1,10 @@
+one operation in 100 ns
+one operation in 0 ns
+one operation in 0 ns
+one operation in 0 ns
+one operation in 0 ns
+one operation in 0 ns
+one operation in 0 ns
+one operation in 0 ns
+one operation in 100 ns
+one operation in 0 ns

@@ -10,6 +10,7 @@ long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
     (t_stop->tv_sec - t_start->tv_sec)*1000000000;
 }
 
+
 long bench(int n, int loop) {
     struct timespec t_start, t_stop;
 
@@ -29,16 +30,65 @@ long bench(int n, int loop) {
     return wall;
 }
 
-/*int main() {
-    int n = 1000;
-    int loop = 1000;
 
-    for (int i = 0; i < 10; i++) {
-        long wall = bench(n, loop);
-        printf("time : %ld ns\n", wall);
 
+long search(int n, int loop) {
+    struct timespec t_start, t_stop;
+
+    int *array = (int*)malloc(n*sizeof(int));
+    for (int i = 0; i < n; i++) array[i] = rand()%(n*2);
+
+    int *keys = (int*)malloc(loop*sizeof(int));
+    for (int i = 0; i < loop; i++) keys[i] = rand()%(n*2);
+
+    int sum = 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t_start);
+
+    for (int i = 0; i < loop; i++) {
+        int key = keys[i];
+        for (int j = 0; j < n; j++) {
+            if (key == array[j]) {
+                sum++;
+                break;
+            }
+        }
     }
-}*/
+
+    clock_gettime(CLOCK_MONOTONIC, &t_stop);
+    long wall = nano_seconds(&t_start, &t_stop);
+
+    return wall;
+}
+
+long duplicates(int n) {
+    struct timespec t_start, t_stop;
+
+    int *array_a = (int*)malloc(n*sizeof(int));
+    for (int i = 0; i < n; i++) array_a[i] = rand()%(n*2);
+
+    int *array_b = (int*)malloc(n*sizeof(int));
+    for (int i = 0; i < n; i++) array_b[i] = rand()%(n*2);
+
+    int sum = 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t_start);
+
+    for (int i = 0; i < n; i++) {
+        int key = array_a[i];
+        for (int j = 0; j < n; j++) {
+            if (key == array_b[j]) {
+                sum++;
+                break;
+            }
+        }
+    }
+    clock_gettime(CLOCK_MONOTONIC, &t_stop);
+    long wall = nano_seconds(&t_start, &t_stop);
+    return wall;
+}
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -52,12 +102,10 @@ int main(int argc, char *argv[]) {
         int n = sizes[i];
         long min = LONG_MAX;
         for (int i = 0; i < k; i++)  {
-            long wall = bench(n, loop);
+            long wall = duplicates(n);
             if (wall < min)
                 min = wall;
         }
         printf("%d  %0.2f ns\n", n, (double)min/loop);
     }
-    
-
 }

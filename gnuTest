@@ -1,0 +1,19 @@
+# Gnuplot script to visualize the data
+
+# Set terminal and output file (e.g., PNG or PDF)
+set terminal pdfcairo size 4,4 enhanced font 'Arial,10'
+set output 'data_plot.pdf'
+
+# Set titles and labels
+set title "Data Plot"
+set xlabel "Data Size (n)"
+set ylabel "Time (ns)"
+
+# Set grid and style
+set grid
+set style data linespoints
+set pointsize 1.5
+set xtics rotate by -45
+
+# Plot the data from file
+plot "serchTime.txt" using 1:2 title "Time vs Data Size" with linespoints
