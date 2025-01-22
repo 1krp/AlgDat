@@ -30,17 +30,15 @@ void push(stack *stk, int val) {
         }                                           //copys over the old elements
 
         free(stk->array);
-        stk->array = copy;
-    }                                               //frees up the old array
-
+        stk->array = copy;                          //frees up the old array
+    }                                              
     stk->array[stk->top] = val;
     stk->top += 1;
 
 }
     int pop(stack *stk) {
 
-    if (stk->top == stk->size /4)
-    {
+    if (stk->top <= stk->size /4) {
         int size = stk->size /2;
         stk->size = size;
         int *copy = (int*)malloc(size * sizeof(int));
