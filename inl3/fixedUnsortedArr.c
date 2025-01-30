@@ -38,7 +38,6 @@ int* randomArray(int size) {
 long unsorted_search(int array[], int size, int keyArr[]) {
     struct timespec t_start, t_stop;
     int loop = 1000;
-    long min = LONG_MAX;
     clock_gettime(CLOCK_MONOTONIC, &t_start);
     for (int i = 0; i < loop; i++) {
         int key = keyArr[i];
