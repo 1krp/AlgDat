@@ -36,9 +36,8 @@ int* randomArray(int size) {
 
 long binary_search(int array[], int size, int keyArr[]) {
     struct timespec t_start, t_stop;
-    int loop = 10000;
-
-    clock_gettime(CLOCK_MONOTONIC, &t_start);
+    int loop = 1;
+    printf("into search\n");
 
     for (int i = 0; i < loop; i++) {
         int key = keyArr[i];
@@ -50,6 +49,7 @@ long binary_search(int array[], int size, int keyArr[]) {
         while (first <= last) {
             // jump to the middle
             int index = first+(last-first)/2;
+            printf("into3 search\n");
             if (array[index] == key) {
                 break;
             }
@@ -67,9 +67,7 @@ long binary_search(int array[], int size, int keyArr[]) {
            break;
         }
     }
-    clock_gettime(CLOCK_MONOTONIC, &t_stop);
-
-    long wall = (nano_seconds(&t_start, &t_stop))/loop;
+    long wall = 11;
     return wall;
 }
 
@@ -77,28 +75,18 @@ long binary_search(int array[], int size, int keyArr[]) {
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
 
-    printf("Binary\n");
 
-    int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000,512000,1024000,2048000,4096000,8192000,16384000,32768000};
-    int k = 10;
 
-    for (int i = 0; i < 16; i++)
-    {
-        int size = sizes[i];
-        long min = LONG_MAX;
-        
-        for (int i = 0; i < k; i++)  {
+            int* keyArr = randomArray(1000);
+            int* array = sortedArray(1000);
+            
+            long wall = binary_search(array,1000,keyArr);
 
-            int* keyArr = randomArray(size);
-            int* array = sortedArray(size);
-            long wall = binary_search(array,size,keyArr);
-
-            if (wall < min)
-                min = wall;
+            
 
             free(array);  
             free(keyArr);
-        }
-            printf("%d  %0.2f ns\n", size, (double)min);
-    }
+        
+            printf("%d  %0.2f ns\n", 100, (double)wall);
+    
 }
