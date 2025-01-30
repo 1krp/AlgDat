@@ -43,7 +43,6 @@ long unsorted_search(int array[], int size, int keyArr[]) {
     for (int i = 0; i < loop; i++) {
         int key = keyArr[i];
 
-
         for (int index = 0; index < size ; index++) {
             if (array[index] == key) {
                 break;
