@@ -14,75 +14,51 @@ long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
 int *sortedArray(int size) {
     int *array = (int*)malloc(size * sizeof(int));
     int nxt = 0;
-
     for (int i = 0; i < size ; i++) {
         nxt += rand()%10 + 1;
         array[i] = nxt;
         }
-
     return array;
 }
 
 int* randomArray(int size) {
     int* randomArray = malloc(size * sizeof(int));
-
-    for (int i = 0; i < size; i++)
-    {
+    for (int i = 0; i < size; i++) {
        randomArray[i] = rand()%(2*size);
     }
     return randomArray;
-    
 }
 
-long binary_search(int array[], int size, int keyArr[]) {
-    struct timespec t_start, t_stop;
-    int loop = 10000;
-
-    clock_gettime(CLOCK_MONOTONIC, &t_start);
-
-    for (int i = 0; i < loop; i++) {
-        int key = keyArr[i];
-    
-        int first = 0;
-        int last = size-1;
-        
-        
-        while (first <= last) {
-            // jump to the middle
-            int index = first+(last-first)/2;
-            if (array[index] == key) {
-                break;
-            }
-            if (array[index] < key && index < last) {
-                // what is the first possible page?
-                first = index +1;
-                
-            }
-            if (array[index] > key && index > first) {
-                // what is the last possible page?
-                last = index -1;
-                
-            }
-            // Why do we land here? What should we do?
-           break;
-        }
+bool binaryRecursive_search(int array[], int size, int key, int first , int last) {
+    if (first > last) {
+        return false;
     }
-    clock_gettime(CLOCK_MONOTONIC, &t_stop);
+    int index = (first+last) / 2;
+    if (array[index] == key) {
+        return true;
+    }
+    if (array[index] < key && index < last) {
+        first = index + 1;
+        binaryRecursive_search(array,size,key,first,last);
 
-    long wall = (nano_seconds(&t_start, &t_stop))/loop;
-    return wall;
+    }
+    else if (array[index] > key && index > first) {
+        last = index - 1;
+        binaryRecursive_search(array,size,key,first,last);
+    }
 }
 
 
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
 
-    printf("Binary\n");
+    printf("Binary Recursive\n");
 
-    int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000,512000,1024000,2048000,4096000,8192000,16384000,32768000};
-    int k = 10;
+    int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000,512000,1024000,2048000};
+    int k = 100;
+    int loop = 100000;
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 12; i++)
     {
         int size = sizes[i];
         long min = LONG_MAX;
@@ -90,10 +66,17 @@ int main(int argc, char *argv[]) {
         for (int i = 0; i < k; i++)  {
 
             int* keyArr = randomArray(size);
+            int key = keyArr[k];
             int* array = sortedArray(size);
-            long wall = binary_search(array,size,keyArr);
+            clock_gettime(CLOCK_MONOTONIC, &t_start);
+            for (int i = 0; i < loop; i++)
+            {
+                bool found = binaryRecursive_search(array,size,key,0,size -1);
+            }
+            clock_gettime(CLOCK_MONOTONIC, &t_stop);
+            long wall = (nano_seconds(&t_start, &t_stop))/loop;
 
-            if (wall < min)
+           
                 min = wall;
 
             free(array);  
