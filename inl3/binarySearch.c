@@ -40,7 +40,6 @@ bool binaryRecursive_search(int array[], int size, int key, int first , int last
     if (array[index] < key && index < last) {
         first = index + 1;
         binaryRecursive_search(array,size,key,first,last);
-
     }
     else if (array[index] > key && index > first) {
         last = index - 1;
