@@ -37,7 +37,23 @@ int selectionSort(int array[], int size) {
     }
     return 0;
 }
+long bench(int size, int loop) {
+    struct timespec t_start, t_stop;
+    long time = 0;
+    for (int i = 0; i < loop; i++) {
+        int* unsorted = randomArray(size);
+        long wall = LONG_MAX;
 
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        selectionSort(unsorted, size);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
+        free(unsorted);
+    }
+    return time/loop; 
+}
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
     printf("Selection Sort\n");
@@ -46,15 +62,9 @@ int main(int argc, char *argv[]) {
 
     for (int i = 0; i < 9; i++) {
         int size = sizes[i];
-        long wall = LONG_MAX;
-        int* unsorted = randomArray(size);
+        int loop = 1;
+        long benchTime = bench(size, loop);
 
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
-        int found = selectionSort(unsorted, size);
-        clock_gettime(CLOCK_MONOTONIC, &t_stop);
-
-        wall = nano_seconds(&t_start, &t_stop);   
-        free(unsorted);
-        printf("%d  %0.2f ns\n", size, (double)wall);
+        printf("%d  %0.2f ns\n", size, (double)benchTime);
     }
 }

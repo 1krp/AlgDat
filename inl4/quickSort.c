@@ -39,7 +39,6 @@ int partition(int *org, int start, int end) {
             int temp = org[i];
             org[i] = org[j];
             org[j] = temp;
-        
         }
     }
     i++;
@@ -70,8 +69,7 @@ long bench(int size, int loop) {
         time += wall;
         free(unsorted);
     }
-    return time/loop;
-    
+    return time/loop; 
 }
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
