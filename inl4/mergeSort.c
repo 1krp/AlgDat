@@ -5,6 +5,7 @@
 #include <time.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <math.h>
 
 long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
     return (t_stop->tv_nsec - t_start->tv_nsec) +
@@ -54,6 +55,25 @@ void printArray(int arr[], int size) {
     }
     printf("\n");
 }
+long bench(int size, int loop) {
+    struct timespec t_start, t_stop;
+    long time = 0;
+    for (int i = 0; i < loop; i++) {
+        int* unsorted = randomArray(size);
+        int* aux = malloc(size * sizeof(int));
+        long wall = LONG_MAX;
+
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        mergeSort(unsorted, aux, 0, size - 1);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
+        free(unsorted);
+        free(aux);
+    }
+    return time/loop;
+}
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
     printf("Merge sort\n");
@@ -61,20 +81,12 @@ int main(int argc, char *argv[]) {
     
     for (int i = 0; i < 11; i++) {
         int size = sizes[i];
-        long wall = LONG_MAX;
-        int* unsorted = randomArray(size);
-        int* aux = malloc(size * sizeof(int));
-        int loop = 1000;
+        int loop = 100;
 
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
-        for (int i = 0; i < loop; i++) {
-            mergeSort(unsorted, aux, 0, size - 1);
-        }
-        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+        long benchTime = bench(size, loop);
+        double timePerElement = (double)benchTime / size;
+        double timePerElementLog = (double)benchTime / (size * log(size));
 
-        wall = (nano_seconds(&t_start, &t_stop))/loop;   
-        free(unsorted);
-        free(aux);
-        printf("%d  %0.2f ns\n", size, (double)wall);
+        printf("%d  %0.2f ns  %0.2f ns/element  %0.2f ns/(n log n)\n", size, (double)benchTime, timePerElement, timePerElementLog);
     }
 }

@@ -55,6 +55,24 @@ void printArray(int arr[], int size) {
     }
     printf("\n");
 }
+long bench(int size, int loop) {
+    struct timespec t_start, t_stop;
+    long time = 0;
+    for (int i = 0; i < loop; i++) {
+        int* unsorted = randomArray(size);
+        long wall = LONG_MAX;
+
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        quickSort(unsorted, 0, size - 1);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
+        free(unsorted);
+    }
+    return time/loop;
+    
+}
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
     printf("Quick sort\n");
@@ -62,19 +80,9 @@ int main(int argc, char *argv[]) {
     
     for (int i = 0; i < 11; i++) {
         int size = sizes[i];
-        long wall = LONG_MAX;
-        int* unsorted = randomArray(size);
-        int loop = 1;
-
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
-        for (int i = 0; i < loop; i++) {
-            quickSort(unsorted, 0, size - 1);
-        }
-        clock_gettime(CLOCK_MONOTONIC, &t_stop);
-
-        wall = (nano_seconds(&t_start, &t_stop))/loop;   
-        free(unsorted);
+        int loop = 10;
+        long benchTime = bench(size, loop);
        
-        printf("%d  %0.2f ns\n", size, (double)wall);
+        printf("%d  %0.2f ns\n", size, (double)benchTime);
     }
 }
