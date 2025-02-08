@@ -24,11 +24,11 @@ int selectionSort(int array[], int size) {
 
     for (int i = 0; i < size -1; i++) {
 
-    int candidate = array[i];
+    int candidate = i;
 
         for (int j = i; j < size ; j++) {
-            if (array[j] < candidate) {
-                candidate = array[j];
+            if (array[j] < array[candidate]) {
+                candidate = j;
             }
         }
             int temp = array[i];
@@ -58,9 +58,21 @@ int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
     printf("Selection Sort\n");
 
-    int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000};
+        int sizes[20];
+        int sum = 1000;
+    for (int i = 0; i < 20 ; i++) {
+        if (i<8) {
+            sum += 1000;
+            sizes[i] = sum;
+        } else {
+            sum += 10000;
+            sizes[i] = sum;
+        }
+    }
 
-    for (int i = 0; i < 9; i++) {
+    //int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000};
+
+    for (int i = 0; i < 20; i++) {
         int size = sizes[i];
         int loop = 1;
         long benchTime = bench(size, loop);

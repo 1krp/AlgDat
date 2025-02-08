@@ -77,16 +77,29 @@ long bench(int size, int loop) {
 int main(int argc, char *argv[]) {
     struct timespec t_start, t_stop;
     printf("Merge sort\n");
-    int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000,512000,1024000};
+    int sizes[250];
+    int sum = 1000;
+    for (int i = 0; i < 250; i++) {
+        if (i<100) {
+            sum += 1000;
+            sizes[i] = sum;
+        } else {
+            sum += 10000;
+            sizes[i] = sum;
+        }
+    }
     
-    for (int i = 0; i < 11; i++) {
+
+    //int sizes[] = {1000,2000,4000,8000,16000,32000,64000,128000,256000,512000,1024000, 2048000};
+    
+    
+    for (int i = 0; i < 250; i++) {
         int size = sizes[i];
-        int loop = 100;
-
+        int loop = 1;
         long benchTime = bench(size, loop);
-        double timePerElement = (double)benchTime / size;
-        double timePerElementLog = (double)benchTime / (size * log(size));
-
-        printf("%d  %0.2f ns  %0.2f ns/element  %0.2f ns/(n log n)\n", size, (double)benchTime, timePerElement, timePerElementLog);
+        long bechSize = benchTime/size;
+        long benchLog = (benchTime/size)*(log2l(size));
+       
+        printf("%d  %ld ns\n", size, benchTime);
     }
 }
