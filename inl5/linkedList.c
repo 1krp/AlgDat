@@ -6,6 +6,11 @@
 #include <limits.h>
 #include <stdbool.h>
 
+long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
+    return (t_stop->tv_nsec - t_start->tv_nsec) +
+    (t_stop->tv_sec - t_start->tv_sec)*1000000000;
+}
+
 typedef struct cell {
     int value;
     struct cell *tail;
@@ -108,16 +113,16 @@ void linked_append(linked *a, linked *b) {
 /*
 * Generates a linked list
 */
-linked *linked_init(int n) {
+linked *linked_init(int size) {
     linked *a = linked_create();
-    for (int i = 1; i <= n; i++) {
+    for (int i = 1; i <= size; i++) {
         linked_add(a, i);
     }
     return a;
 }
 
 /*
-* print outs the values of the cells in a list
+* Print outs the values of the cells in a list
 */
 void *linked_print(linked *lnk) {
     cell *tmp = lnk->first;
@@ -127,10 +132,71 @@ void *linked_print(linked *lnk) {
     }
 }
 
+/*
+* Creates a array of growing values
+*/
+int *bench_sizes(int size, int itr) {
+    int* sizes = malloc(size * sizeof(int)); 
+    int value = itr;   
+    for (int i = 0; i < size; i++) {
+        sizes[i] = value;
+        value += itr; 
+    }
+    return sizes;
+}
+/*
+* Function to use for benchmarks
+*/
+long bench_fixedB(int size, int loop) {
+    struct timespec t_start, t_stop;
+    long time = 0;
+    for (int i = 0; i < loop; i++) {
+        linked *a = linked_init(size);
+        linked *b = linked_init(10);
+        long wall = LONG_MAX;
+
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        linked_append(a,b);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
+        free(a);
+        free(b);
+    }
+    return time/loop; 
+}
+/*
 
 int main(int argc, char *argv[]) {
-    linked *a = linked_init(100);
+    linked *a = linked_init(10);
+    linked *b = linked_init(10);
+    linked_append(a,b);
     linked_print(a);
+
+    int* sizes = bench_sizes(10,10);
+    for (int i = 0; i < 10; i++) {
+        printf("%d \n", sizes[i]);
+    }
     
+}
+
+*/
+
+
+
+int main(int argc, char *argv[]) {
+    int* sizes = bench_sizes(100,1000);
+    
+    for (int i = 0; i < 100; i++) {
+        int size = sizes[i];
+        int loop = 50;
+        long benchTime = bench_fixedB(size, loop);
+
+        printf("%d  %ld ns\n", size, benchTime);
+    }
+    
+    free(sizes);
     return 0;
 }   
+
