@@ -152,7 +152,7 @@ long bench_fixedB(int size, int loop) {
     long time = 0;
     for (int i = 0; i < loop; i++) {
         linked *a = linked_init(size);
-        linked *b = linked_init(10);
+        linked *b = linked_init(100);
         long wall = LONG_MAX;
 
         clock_gettime(CLOCK_MONOTONIC, &t_start);
@@ -162,7 +162,27 @@ long bench_fixedB(int size, int loop) {
         wall = nano_seconds(&t_start, &t_stop);   
         time += wall;
         free(a);
-        free(b);
+    }
+    return time/loop; 
+}
+/*
+* Function to use for benchmarks
+*/
+long bench_fixedA(int size, int loop) {
+    struct timespec t_start, t_stop;
+    long time = 0;
+    for (int i = 0; i < loop; i++) {
+        linked *a = linked_init(10000);
+        linked *b = linked_init(size);
+        long wall = LONG_MAX;
+
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        linked_append(a,b);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
+        free(a);
     }
     return time/loop; 
 }
@@ -188,10 +208,10 @@ int main(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
     int* sizes = bench_sizes(100,1000);
     
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 76; i++) {
         int size = sizes[i];
         int loop = 50;
-        long benchTime = bench_fixedB(size, loop);
+        long benchTime = bench_fixedA(size, loop);
 
         printf("%d  %ld ns\n", size, benchTime);
     }
