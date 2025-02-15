@@ -46,6 +46,14 @@ void linked_add(linked *lnk, int item) {
     lnk -> first = new;             // set linked first to point to the new cell
 }
 
+int linked_pop(linked *lnk) {
+    cell *tmp = lnk->first;
+    int cellValue = tmp -> value;
+    lnk -> first = tmp -> tail;
+    free(tmp);
+    return cellValue;
+}
+
 /*
 * Returns the length of the list
 */
