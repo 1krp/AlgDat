@@ -5,7 +5,7 @@
 #include <time.h>
 #include <limits.h>
 #include <stdbool.h>
-#include "queuelist.h"
+#include "queuelist2.h"
 
 long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
     return (t_stop->tv_nsec - t_start->tv_nsec) +
@@ -15,17 +15,10 @@ long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
 queue *create_queue() {
     queue *q = (queue*)malloc(sizeof(queue));
     q->first = NULL;
+    q->last = NULL;
     return q;
 }
-void queue_free(queue *q) {
-    node *nxt = q->first;
-    while (nxt != NULL) {
-        node *tmp = nxt ->next;
-        free(nxt);
-        nxt = tmp;
-    }
-    free(q);
-}
+
 /*
 
 int empty(queue *q) {
@@ -36,6 +29,15 @@ int empty(queue *q) {
 }
 
 */
+void queue_free(queue *q) {
+    node *nxt = q->first;
+    while (nxt != NULL) {
+        node *tmp = nxt ->next;
+        free(nxt);
+        nxt = tmp;
+    }
+    free(q);
+}
 
 void enque(queue* q, int v) {
     node *new = (node*)malloc(sizeof(node));
@@ -44,12 +46,10 @@ void enque(queue* q, int v) {
 
     if (q->first == NULL) {
         q->first = new;
+        q->last = new;
     } else{
-        node *tmp = q->first;
-        while (tmp->next != NULL) {
-            tmp = tmp->next;
-        }
-        tmp->next = new;
+        q->last->next = new;
+        q->last = new;
     }
 }
 
@@ -79,6 +79,7 @@ void *queue_print(queue *lnk) {
         tmp = tmp->next;        
     }
 }
+
 int *bench_sizes(int size, int itr) {
     int* sizes = malloc(size * sizeof(int)); 
     int value = itr;   
@@ -92,29 +93,30 @@ int *bench_sizes(int size, int itr) {
 long bench_b(int size, int loop) {
     struct timespec t_start, t_stop;
     long time = 0;
+    queue *q = create_queue();
     
     for (int i = 0; i < loop; i++) {
         long wall = LONG_MAX;
 
         clock_gettime(CLOCK_MONOTONIC, &t_start);
-        queue *q = queue_init(size);
+        enque(q,size)
         clock_gettime(CLOCK_MONOTONIC, &t_stop);
 
         queue_free(q);
         wall = nano_seconds(&t_start, &t_stop);   
         time += wall;
     }
-    
+    queue_free(q);
     return time/loop;
 }
 
+
 int main(int argc, char *argv[]) {
-    printf("First Queue\n");
     int* sizes = bench_sizes(100,1000);
     
     for (int i = 0; i < 76; i++) {
         int size = sizes[i];
-        int loop = 50;
+        int loop = 500;
         long benchTime = bench_b(size, loop);
 
         printf("%d  %ld ns\n", size, benchTime);
@@ -127,7 +129,7 @@ int main(int argc, char *argv[]) {
 /*
 int main(int argc, char *argv[]) {
     int size = 10;
-    printf("Queue\n");
+    printf("Queue improved\n");
     queue *a = queue_init(size);
     queue_print(a);
     for (int i = 0; i < size; i++) {
@@ -136,5 +138,7 @@ int main(int argc, char *argv[]) {
     printf("Current state of queue:\n");
     queue_print(a);
     }
-}
-    */
+    free(a);
+} 
+
+*/
