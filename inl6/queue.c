@@ -108,14 +108,35 @@ long bench_b(int size, int loop) {
     return time/loop;
 }
 
+
+long bench_queue(int size, int loop) {
+    struct timespec t_start, t_stop;
+    queue *q = queue_init(size);
+    long time = 0;
+
+    for (int i = 0; i < loop; i++) {
+        long wall = LONG_MAX;
+
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        enque(q, (rand() % 100) + 1);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
+    }
+    queue_free(q);
+    return time/loop;
+}
+
+
 int main(int argc, char *argv[]) {
     printf("First Queue\n");
-    int* sizes = bench_sizes(100,1000);
+    int* sizes = bench_sizes(50,1000);
     
-    for (int i = 0; i < 76; i++) {
+    for (int i = 0; i < 50; i++) {
         int size = sizes[i];
-        int loop = 50;
-        long benchTime = bench_b(size, loop);
+        int loop = 5;
+        long benchTime = bench_queue(size, loop);
 
         printf("%d  %ld ns\n", size, benchTime);
     }
