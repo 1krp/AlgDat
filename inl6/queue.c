@@ -26,16 +26,14 @@ void queue_free(queue *q) {
     }
     free(q);
 }
-/*
 
-int empty(queue *q) {
-    node *tmp = q->first;
-    int value = tmp->value;
-    free(tmp);
-    return ;
+bool empty(queue *q) {
+    bool empty = false;
+    if (q->first != NULL) {
+        empty = true;
+    }
+    return empty;   
 }
-
-*/
 
 void enque(queue* q, int v) {
     node *new = (node*)malloc(sizeof(node));
@@ -88,26 +86,6 @@ int *bench_sizes(int size, int itr) {
     }
     return sizes;
 }
-
-long bench_b(int size, int loop) {
-    struct timespec t_start, t_stop;
-    long time = 0;
-    
-    for (int i = 0; i < loop; i++) {
-        long wall = LONG_MAX;
-
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
-        queue *q = queue_init(size);
-        clock_gettime(CLOCK_MONOTONIC, &t_stop);
-
-        queue_free(q);
-        wall = nano_seconds(&t_start, &t_stop);   
-        time += wall;
-    }
-    
-    return time/loop;
-}
-
 
 long bench_queue(int size, int loop) {
     struct timespec t_start, t_stop;

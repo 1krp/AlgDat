@@ -19,16 +19,16 @@ queue *create_queue() {
     return q;
 }
 
-/*
 
-int empty(queue *q) {
-    node *tmp = q->first;
-    int value = tmp->value;
-    free(tmp);
-    return ;
+
+bool empty(queue *q) {
+    bool empty = false;
+    if (q->first == NULL) {
+        empty = true;
+    }
+    return empty;   
 }
 
-*/
 void queue_free(queue *q) {
     node *nxt = q->first;
     while (nxt != NULL) {
@@ -54,13 +54,20 @@ void enque(queue* q, int v) {
 }
 
 int dequeue(queue *q) {
-    int res = 0;
-    if (q->first != NULL) {
-        node *tmp = q->first;
-        res = tmp->value;
-        q->first= tmp->next;
-        free(tmp);
+    if (empty(q)) {
+        printf("error: queue is empty\n");
+        exit(1);
     }
+    node *tmp = q->first;
+    int res = tmp->value;
+    if (q->first->next ==NULL) {
+        q->first = NULL;
+        q->last = NULL;
+    } else {
+    q->first= tmp->next;
+    }
+    free(tmp);
+    
     return res;
 }
 
@@ -90,26 +97,6 @@ int *bench_sizes(int size, int itr) {
     return sizes;
 }
 
-long bench_b(int size, int loop) {
-    struct timespec t_start, t_stop;
-    long time = 0;
-    queue *q = create_queue();
-    
-    for (int i = 0; i < loop; i++) {
-        long wall = LONG_MAX;
-
-        clock_gettime(CLOCK_MONOTONIC, &t_start);
-        enque(q,size);
-        clock_gettime(CLOCK_MONOTONIC, &t_stop);
-
-        queue_free(q);
-        wall = nano_seconds(&t_start, &t_stop);   
-        time += wall;
-    }
-    queue_free(q);
-    return time/loop;
-}
-
 long bench_queue(int size, int loop) {
     struct timespec t_start, t_stop;
     queue *q = queue_init(size);
@@ -133,9 +120,9 @@ int main(int argc, char *argv[]) {
     printf("Improved Queue\n");
     int* sizes = bench_sizes(50,1000);
     
-    for (int i = 0; i < 76; i++) {
+    for (int i = 0; i < 50; i++) {
         int size = sizes[i];
-        int loop = 500;
+        int loop = 5000000;
         long benchTime = bench_queue(size, loop);
 
         printf("%d  %ld ns\n", size, benchTime);
@@ -153,11 +140,11 @@ int main(int argc, char *argv[]) {
     queue_print(a);
     for (int i = 0; i < size; i++) {
     int d = dequeue(a);
-    printf("dequed : %d \n",d);
+    printf("dequed: %d \n",d);
     printf("Current state of queue:\n");
     queue_print(a);
     }
+    int test = dequeue(a);
     free(a);
 } 
-
 */
