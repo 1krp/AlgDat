@@ -74,10 +74,29 @@ queue* halfQsize(queue* q) {
     return q;
 }
 
+queue* resizeQ(queue* q,double operator) {
+    int* newArr = (int*)malloc((q->qSize*operator) * sizeof(int));
+
+    for (int i = 0; i < q->top; i++) {
+        int index = (q->first + i) % q->qSize;
+        newArr[i] = q->items[index];
+    }
+    
+    free(q->items);
+    q->items = newArr;
+    q->qSize *= operator;
+    q->first = 0;
+    q->last = q->top - 1;
+    
+    return q;
+    
+}
+
 void enqueue(queue* q, int item) {
     if (isFull(q)) {
         printf("Queue is full, doubling Q size \n");
-        q = doubleQsize(q);
+        //q = doubleQsize(q);
+        q = resizeQ(q, 2);
     } 
 
     q->last = (q->last + 1) % q->qSize; // Circular logic
@@ -94,7 +113,8 @@ int dequeue(queue* q) {
     q->top--;
     
     if (isLessThanHalf(q)) {
-        q = halfQsize(q);
+        //q = halfQsize(q);
+        q = resizeQ(q, 0.5);
     }
 
     return item;
@@ -110,17 +130,18 @@ int main(int argc, char const *argv[]) {
     queue* q = createQ(10);
     printf("Queue created with size: %d\n", q->qSize);
 
-    for (int i = 1; i <= 15; i++) {
+    for (int i = 1; i <= 45; i++) {
         enqueue(q, i * 10);
     }
 
     printQ(q);
 
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 40; i++) {
         printf("Dequed: %d\n",dequeue(q));
     }
 
     printQ(q);
+    printf("%d %d\n",q->qSize,q->top);
     free(q->items);
     free(q);
     return 0;
