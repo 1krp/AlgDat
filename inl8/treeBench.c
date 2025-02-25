@@ -42,10 +42,6 @@ node* add_node_recursive(node* nd, int value) {
     if (nd == NULL) {                       // "Base case"
         return create_node(value);
     }
-    if (nd->value == value) {
-        return nd;
-    }
-    
     if (value < nd->value) {
         nd->left = add_node_recursive(nd->left, value);
     } else {
@@ -83,31 +79,60 @@ bool lookup_recursive(node* nd, int value) {
 bool lookup(tree *tr, int value) {
     return lookup_recursive(tr->root, value);
 }
-void print_node(node *nd, int depth) {
-    if (nd != NULL) {
-        print_node(nd->left,depth +1);
-        for (int i = 0; i < depth; i++) {
-            printf("    ");  
-        }
-        printf("%d \n",nd->value);
-        print_node(nd->right, depth +1);
-    } 
+
+long nano_seconds(struct timespec *t_start, struct timespec *t_stop) {
+    return (t_stop->tv_nsec - t_start->tv_nsec) +
+    (t_stop->tv_sec - t_start->tv_sec)*1000000000;
 }
-void print_tree(tree *tr) {
-    if(tr->root !=NULL) {
-        print_node(tr->root,0);
+long bench_lookup(int size, int loop) {
+    struct timespec t_start, t_stop;
+    tree *tr = create_tree();
+    init_tree(tr, size);
+    long time = 0;
+    for (int i = 0; i < loop; i++) {
+        long wall = LONG_MAX;
+        int value = (rand() % size) + 1;
+        clock_gettime(CLOCK_MONOTONIC, &t_start);
+        lookup(tr, value);
+        clock_gettime(CLOCK_MONOTONIC, &t_stop);
+
+        wall = nano_seconds(&t_start, &t_stop);   
+        time += wall;
     }
+    free_tree(tr);
+    return time/loop;
 }
+int *bench_sizes(int size, int itr) {
+    int* sizes = malloc(size * sizeof(int)); 
+    int value = itr;   
+    for (int i = 0; i < size; i++) {
+        sizes[i] = value;
+        value += itr; 
+    }
+    return sizes;
+}
+
+/*
+int main(int argc, char const *argv[]) {
+    tree* tr = create_tree();
+    init_tree(tr, 10);
+    return 0;
+}
+*/
 
 
 int main(int argc, char const *argv[]) {
-    tree* tr = create_tree();
-    init_tree(tr, 30);
-    printf("root: %d \n",tr->root->value);
-    print_tree(tr);
-    free_tree(tr);
+    printf("Binary tree lookup avrage \n");
+    int* sizes = bench_sizes(20,100000);
+    
+    for (int i = 0; i < 20; i++) {
+        int size = sizes[i];
+        int loop = 500;
+        long benchTime = bench_lookup(size, loop);
+
+        printf("%d  %ld ns\n", size, benchTime);
+    }
+    
+    free(sizes);
     return 0;
 }
-
-
-
