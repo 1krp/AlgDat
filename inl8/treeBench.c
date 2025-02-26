@@ -42,6 +42,9 @@ node* add_node_recursive(node* nd, int value) {
     if (nd == NULL) {                       // "Base case"
         return create_node(value);
     }
+    if (nd->value == value) {
+        return nd;
+    }
     if (value < nd->value) {
         nd->left = add_node_recursive(nd->left, value);
     } else {

@@ -45,7 +45,7 @@ node* add_node_recursive(node* nd, int value) {
     if (nd->value == value) {
         return nd;
     }
-    
+
     if (value < nd->value) {
         nd->left = add_node_recursive(nd->left, value);
     } else {
@@ -126,7 +126,7 @@ void inorder_traversal(tree* tr) {
     stack* stk = create_stack();
     node* cur = tr->root;
     
-    while (cur != NULL || !is_empty(stk)) {
+    while (cur != NULL || stk->top != NULL) {
 
         // Move to the leftmost node
         while (cur != NULL) {
