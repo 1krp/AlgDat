@@ -28,6 +28,7 @@ typedef struct tree{
 typedef struct queue {
     node* first;
     node* last;
+    node* sequenceNext;
 } queue;
 
 /*
@@ -39,6 +40,7 @@ queue *create_queue() {
     queue *q = (queue*)malloc(sizeof(queue));
     q->first = NULL;
     q->last = NULL;
+    q->sequenceNext = NULL;
     return q;
 }
 
@@ -67,9 +69,11 @@ void enque(queue* q, node* nd) {
     if (q->last != NULL) {
         q->last->next = nd;
         q->last = nd;
+        
     } else {
         q->first = nd;
         q->last = nd;
+        q->sequenceNext = nd;
     }
 }
 
@@ -224,16 +228,15 @@ void print_breadth(tree* tr) {
 
     // Enqueue root
     enque(q, next);
-
+    // Bfs snurran
     while (q->first != NULL) {
-        // Print first from root
-        next = deque(q);
+        
+        next = deque(q);    // Deque av noden
         printf("%d\n", next->value);
 
-        // Lägg till left och right
-        if (next->left != NULL)
+        if (next->left != NULL)     // Lägg till left-branch
             enque(q, next->left);
-        if (next->right != NULL)
+        if (next->right != NULL)    // Lägg till right-branch
             enque(q, next->right);
     }
 }
@@ -246,6 +249,82 @@ void inorder_traversal(node* nd) {
     }
 }
 
+node* bfs(node* nd, queue* q) {
+    if (is_empty(q))  // Base case: Stop when queue is empty
+        return NULL;
+    
+    node* next = deque(q); // Dequeue the next node
+    printf("%d ", next->value); // Process the node
+
+    // Enqueue children if they exist
+    if (next->left != NULL)
+        enque(q, next->left);
+    if (next->right != NULL)
+        enque(q, next->right);
+
+    return next; // Return the dequeued node
+}
+
+void init_bfs(tree* tr, queue* q) {
+    if (tr->root != NULL) {
+        enque(q, tr->root); // Start with the root in the queue
+        bfs(tr->root, q);
+    }
+}
+/*
+* - - - - Lasy sequence - - - - - - - - - - - - - - -
+*/
+
+typedef struct sequence {
+    queue* q;
+} sequence;
+
+sequence* create_sequence (tree* tr){
+    
+    sequence* seq = (sequence*)malloc(sizeof(sequence));
+    seq->q = create_queue();
+
+    node* next = tr->root;
+    queue* q = create_queue();
+
+    // Köa root i q
+    enque(q, next);
+
+    while (q->first != NULL) {
+
+        next = deque(q);
+        // Köa första elementet från q till seq->q
+        enque(seq->q, next);
+
+        if (next != NULL) {
+            if (next->left != NULL)
+                enque(q, next->left);
+            if (next->right != NULL)
+                enque(q, next->right);
+        }
+    }
+
+    return seq;
+}
+
+int next(sequence* seq) {
+    if (seq->q->sequenceNext == NULL) {
+        printf("sequence empty\n");
+        return 0;
+    }else {
+        node* next = seq->q->sequenceNext;
+        // iterate sequenceNext 
+        seq->q->sequenceNext = next->next;
+        return next->value;
+    }
+}
+void use_next(sequence* seq, int n) {
+    for (int i = 0; i < n; i++){
+        printf("%d \n", next(seq));
+    }
+    printf("Paused\n");
+}
+
 int main() {
     tree* tr = create_tree();
     init_tree(tr, 9);
@@ -254,4 +333,11 @@ int main() {
     print_tree(tr);
     printf("\n");
     print_breadth(tr);
+
+    sequence* seq = create_sequence(tr);
+    int n = 3;
+    int next_s = 0;
+    printf("\n");
+    use_next(seq, 3);
+    use_next(seq, 3);
 }
