@@ -1,13 +1,5 @@
 
 
-/*
-* Queue struct
-*/
-
-typedef struct queue {
-    node *first;
-    node *last;
-} queue;
 
 
 /*
@@ -24,3 +16,12 @@ typedef struct node {
 typedef struct tree{
     node *root;
 }tree;
+
+/*
+* Queue struct
+*/
+
+typedef struct queue {
+    node *first;
+    node *last;
+} queue;

@@ -211,6 +211,21 @@ void inorder_traversal(node* nd) {
         inorder_traversal(nd->right);
     }
 }
+void print_node(node *nd, int depth) {
+    if (nd != NULL) {
+        print_node(nd->left,depth +1);
+        for (int i = 0; i < depth; i++) {
+            printf("    ");  
+        }
+        printf("%d \n",nd->value);
+        print_node(nd->right, depth +1);
+    } 
+}
+void print_tree(tree *tr) {
+    if(tr->root !=NULL) {
+        print_node(tr->root,0);
+    }
+}
 
 int main() {
 
@@ -218,6 +233,8 @@ int main() {
     int* a = get_sorted_array(16);
     tree* t = construct_tree(16, a);
     inorder_traversal(t->root);
+    printf("\n");
+    print_tree(t);
     printf("\n");
     print_breadth(t);
 }
