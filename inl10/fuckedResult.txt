@@ -1,0 +1,31 @@
+Number of dataentrys: 9675
+index: 11115 -> 1 
+index: 11116 -> 11115 
+index: 11117 -> 52132 
+index: 11118 -> 52133 
+index: 11119 -> 52134 
+index: 11120 -> 2 
+index: 11121 -> 2 
+index: 11122 -> 2 
+index: 11123 -> 2 
+index: 11124 -> 2 
+index: 11125 -> 1 
+index: 11126 -> 11120 
+index: 11127 -> 1 
+index: 11128 -> 1 
+index: 11129 -> 3 
+index: 11130 -> 3 
+index: 11131 -> 3 
+index: 11132 -> 2 
+index: 11133 -> 2 
+index: 11134 -> 2 
+int hash: 11101 
+map_lookup serched for zip: 52132, result for lookup: 16 
+
+
+start 
+For mod = 123450 -> avrage traversal distance -> 14
+For mod = 15351 -> avrage traversal distance -> 1095
+For mod = 21031 -> avrage traversal distance -> 222
+For mod = 41031 -> avrage traversal distance -> 37
+For mod = 92413 -> avrage traversal distance -> 14

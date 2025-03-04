@@ -7,6 +7,3 @@ typedef struct node {
 typedef struct tree{
     node *root;
 }tree;
-
-
-

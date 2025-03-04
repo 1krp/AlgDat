@@ -1,0 +1,8 @@
+Number of dataentrys: 9675
+Linear bench
+Linear bench for: 111 15 -> takes: 5 ns
+Linear bench for: 984 99 -> takes: 45514 ns
+
+Binary bench
+Binary bench for: 111 15 -> takes: 64 ns
+Binary bench for: 984 99 -> takes: 70 ns

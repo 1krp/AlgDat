@@ -1,0 +1,12 @@
+Number of dataentrys: 9675
+int as zip Linear bench
+Linear bench for: 111 15 -> takes: 3 ns
+Linear bench for: 984 99 -> takes: 14789 ns
+
+Binary bench
+Binary bench for: 111 15 -> takes: 42 ns
+Binary bench for: 984 99 -> takes: 42 ns
+
+key ass index bench
+KeyIndex bench for: 111 15 -> takes: 2 ns
+KeyIndex bench for: 984 99 -> takes: 2 ns
