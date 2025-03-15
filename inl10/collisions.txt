@@ -1,0 +1,30 @@
+Number of dataentrys: 9675
+int as zip 
+mod: 10000, number of zips: 9675  
+1 coll: 2050,    2 coll: 1130,    3 coll: 545,    4 coll: 334,    5 coll: 203,    6 coll: 99,    7 coll: 56,    8 coll: 39,    9 coll: 9,    
+sum of collisions (1-19): 4465
+
+mod: 20000, number of zips: 9675  
+1 coll: 4180,    2 coll: 1471,    3 coll: 509,    4 coll: 194,    5 coll: 50,    
+sum of collisions (1-19): 6404
+
+mod: 12345, number of zips: 9675  
+1 coll: 4997,    2 coll: 1804,    3 coll: 311,    4 coll: 33,    5 coll: 1,    
+sum of collisions (1-19): 7146
+
+mod: 17389, number of zips: 9675  
+1 coll: 6352,    2 coll: 1414,    3 coll: 161,    4 coll: 3,    
+sum of collisions (1-19): 7930
+
+mod: 13513, number of zips: 9675  
+1 coll: 5410,    2 coll: 1678,    3 coll: 287,    4 coll: 12,    
+sum of collisions (1-19): 7387
+
+mod: 13600, number of zips: 9675  
+1 coll: 3406,    2 coll: 1578,    3 coll: 613,    4 coll: 229,    5 coll: 56,    6 coll: 13,    
+sum of collisions (1-19): 5895
+
+mod: 14000, number of zips: 9675  
+1 coll: 3055,    2 coll: 1316,    3 coll: 615,    4 coll: 320,    5 coll: 134,    6 coll: 31,    7 coll: 1,    
+sum of collisions (1-19): 5472
+

@@ -130,31 +130,27 @@ void collisions(codes *postnr, int mod) {
 int *arr_bucket(codes *postnr, int mod) {
     int *arr = (int *)calloc(mod*8, sizeof(int)); // Allocate enough space
     if (!arr) return NULL; 
-
+    // Increment number of collisions
     for (int i = 0; i < postnr->n; i++) {
         int index = (postnr->areas[i].zip)%mod; 
         arr[index]++;  
     }
+    // Find a empty spot for the zip, after the index
     for (int i = 0; i < postnr->n; i++) {
         int index = (postnr->areas[i].zip)%mod;
         int pos = index + arr[index]; 
-
         while (arr[pos] != 0) {
             pos++;
         }
-
-        arr[pos] = postnr->areas[i].zip; // Store zip code
+        arr[pos] = postnr->areas[i].zip; // Store zip
     }
-
     return arr;
 }
 int map_lookup(int *map, int mod, int zip) {
     int index = (zip%mod);
-
     if (map[index] > 10000 || map[index] == 0) {
         return 0;
     }
-
     for (int i = index; i < (mod * 3); i++) {
         if (map[i] == zip) {
             return i - index;

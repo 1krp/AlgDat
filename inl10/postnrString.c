@@ -56,13 +56,11 @@ codes *read_postcodes(char *file) {
 }
 
 area *linear_search(codes *data, const char *zip) {
-
     for (int i = 0; i < data->n; i++) {
         if (strcmp(data->areas[i].zip, zip) == 0) {
             return &data->areas[i];
         }
     }
-    printf("not found\n");
     return NULL; 
 }
 
@@ -91,7 +89,7 @@ long bench_linear(codes *data, const char *zip, int loop, int itr) {
 
         clock_gettime(CLOCK_MONOTONIC, &t_start);
         for(int j = 0; j < itr; j++) {
-        linear_search(data, zip);
+            linear_search(data, zip);
         }
         clock_gettime(CLOCK_MONOTONIC, &t_stop);
 

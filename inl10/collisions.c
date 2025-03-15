@@ -115,7 +115,7 @@ void collisions(codes *postnr, int mod) {
 
     for (int i = 1; i < mx; i++) {
         if (cols[i] != 0) {
-            printf("%d coll: %d\n",indicator[i],cols[i]);
+            printf("%d coll: %d,    ",indicator[i],cols[i]);
         }
     }
     printf("\n");
