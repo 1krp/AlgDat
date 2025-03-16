@@ -1,0 +1,9 @@
+Malmö -> Göteborg;      shortest path 153 min found in 0.02ms
+Göteborg -> Stockholm;  shortest path 211 min found in 0.01ms
+Malmö -> Stockholm;     shortest path 273 min found in 0.01ms
+Stockholm -> Sundsvall; shortest path 327 min found in 0.34ms
+Stockholm -> Umeå;      shortest path 517 min found in 1.32ms
+Göteborg -> Sundsvall;  shortest path 515 min found in 0.94ms
+Sundsvall -> Umeå;      shortest path 190 min found in 70.65ms
+Umeå -> Göteborg;       shortest path 705 min found in 0.02ms
+Göteborg -> Umeå;       shortest path 705 min found in 3.10ms

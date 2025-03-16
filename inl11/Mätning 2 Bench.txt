@@ -1,0 +1,9 @@
+Malmö -> Göteborg;      shortest path 547 min 
+Göteborg -> Stockholm;  shortest path 400 min 
+Malmö -> Stockholm;     shortest path 273 min 
+Stockholm -> Sundsvall; shortest path 1488 min 
+Stockholm -> Umeå;      shortest path 1678 min 
+Göteborg -> Sundsvall;  shortest path 727 min 
+Sundsvall -> Umeå;      shortest path 2814 min 
+Umeå -> Göteborg;       shortest path 917 min 
+Göteborg -> Umeå;       shortest path 1542 min 

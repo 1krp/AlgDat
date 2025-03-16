@@ -1,0 +1,4 @@
+51 bucket(s) with no collisions.
+5 bucket(s) with 1 collision(s).
+4 bucket(s) with 2 collision(s).
+1 bucket(s) with 3 collision(s).
